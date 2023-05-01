@@ -1,0 +1,22 @@
+{
+  "name": "jupiter_cloud-test_automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "chrome-headless": "npx playwright test --workers=1",
+    "chrome-head": "npx playwright test --headed --workers=1",
+    "corss-browser-head": "npx playwright test --config-file=playwright.config.crossbrowser.js --headed --workers=3",
+    "cross-browser-headless": "npx playwright test --config-file=playwright.config.crossbrowser.js --workers=3",
+    "cross-device-head": "npx playwright test --config-file=playwright.config.crossdevice.js --headed --workers=3",
+    "cross-device-headless": "npx playwright test --config-file=playwright.config.crossdevice.js --workers=3",
+    "all-browsers-devices-head" : "npx playwright test --config-file=playwright.config.allbrowsersdevices.js --headed --workers=4", 
+    "all-browsers-devices-headless" : "npx playwright test --config-file=playwright.config.allbrowsersdevices.js --workers=4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.33.0"
+  }
+}
