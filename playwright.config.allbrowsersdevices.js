@@ -34,6 +34,8 @@ module.exports = defineConfig({
 
     screenshot: 'on',
 
+    retries: 3, //Failing tests will be retried multiple times until they pass, or until the maximum number of retries is reached
+
     headless: true, //Whether to run browser in headless mode
   },
 

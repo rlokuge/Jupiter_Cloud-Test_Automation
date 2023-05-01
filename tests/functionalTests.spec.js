@@ -2,11 +2,10 @@ import { test, expect } from '@playwright/test';
 import PageObjectManager from '../pageobjects/PageObjectManager';
 
 const contactFormData =  JSON.parse(JSON.stringify(require("../utils/contactFormTestData.json"))); //Retrieve test data from given file and convert it into JavaScript object 
+const contactFormErrorValidationData =  JSON.parse(JSON.stringify(require("../utils/contactFormErrorValidationTestData.json")));
 const shoppingListData =  JSON.parse(JSON.stringify(require("../utils/shoppingListTestData.json")));
 let pageObjectManager; 
 let homePage; 
-
-test.describe.configure({mode:'parallel'}); //Default behaviour for the parallel or serial execution
 
 test.beforeEach( async({page})=>
 {
@@ -16,9 +15,8 @@ test.beforeEach( async({page})=>
 
 })
 
-for(const data of contactFormData) 
-{
-  let i =+ 1;
+for(let i = 0; i < contactFormErrorValidationData.length; i++) {
+    const formData = contactFormErrorValidationData[i];
 test(`Testcase 1 - Validate error messages in the Contact form with dataset ${i}`, async ({page})=>
 {
     await homePage.goToContactPage();
@@ -30,7 +28,7 @@ test(`Testcase 1 - Validate error messages in the Contact form with dataset ${i}
     expect((await contactPage.getEmailError()).includes("Email is required")).toBeTruthy();  //Verify the error message with email field 
     expect((await contactPage.getMessageError()).includes("Message is required")).toBeTruthy(); //Verify the error message with message field 
 
-    await contactPage.completeContactForm(data.forename, data.surname, data.email, data.phone, data.message); 
+    await contactPage.completeContactForm(formData.forename, formData.surname, formData.email, formData.phone, formData.message); 
     expect((await contactPage.getHeaderMessage()).includes("tell it how it is.")).toBeTruthy(); //Verify that the header message is changed 
     expect(await contactPage.getForenameErrorElement()).toBeHidden(); //Verify the error messages are hidden for foreane field
     expect(await contactPage.getEmailErrorElement()).toBeHidden(); //Verify the error messages are hidden for email field
@@ -38,24 +36,22 @@ test(`Testcase 1 - Validate error messages in the Contact form with dataset ${i}
 });
 }
 
-for(const data of contactFormData)
-{
-  let i =+ 1;
+for(let i = 0; i < contactFormData.length; i++) {
+  const formData = contactFormData[i];
 test(`Testcase 2 - Verify the successful submission of the Contact form with dataset ${i}`, async ({page})=>
 { 
-  let successMessage = "Thanks " + data.forename + ", we appreciate your feedback."; //Success message after submit the contact form 
+  let successMessage = "Thanks " + formData.forename + ", we appreciate your feedback."; //Success message after submit the contact form 
 
     await homePage.goToContactPage();
     const contactPage = pageObjectManager.getContactPage(); 
-    await contactPage.completeContactForm(data.forename, data.surname, data.email, data.phone, data.message); //Pass valid inputs into the contact form 
+    await contactPage.completeContactForm(formData.forename, formData.surname, formData.email, formData.phone, formData.message); //Pass valid inputs into the contact form 
     await contactPage.clickSubmit(); 
     expect((await contactPage.getSuccessMessage()).includes(successMessage)).toBeTruthy(); //Verify that the success message is displayed after submit the form with valid values 
 });
 }
 
-for(const shoppingList of shoppingListData)
-{
-  let i =+ 1;
+for(let i = 0; i < shoppingListData.length; i++) {
+  const shoppingList = shoppingListData[i];
 test(`Testcase 3 - Verify the cart details with dataset ${i}`, async ({page})=>
 {
   const shopPage = pageObjectManager.getShopPage(); 
